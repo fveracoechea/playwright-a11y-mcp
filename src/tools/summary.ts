@@ -18,7 +18,27 @@ export function summaryTool(mcp: McpServer) {
       title: 'Get Accessibility Summary',
       description: 'Get a summary of accessibility issues for a given webpage URL',
       inputSchema: { url: z.string().url() },
-      // outputSchema: { url: z.string().url() },
+      outputSchema: {
+        url: z.string().url(),
+        timestamp: z.string().datetime(),
+        totalIssues: z.number().int().nonnegative(),
+        passedTests: z.number().int().nonnegative(),
+        incompleteTests: z.number().int().nonnegative(),
+        issuesBySeverity: z.object({
+          critical: z.number().int().nonnegative(),
+          serious: z.number().int().nonnegative(),
+          moderate: z.number().int().nonnegative(),
+          minor: z.number().int().nonnegative(),
+        }),
+        topIssues: z.array(
+          z.object({
+            id: z.string(),
+            impact: z.enum(['critical', 'serious', 'moderate', 'minor']).optional(),
+            description: z.string(),
+            helpUrl: z.string().url(),
+          }),
+        ),
+      },
     },
     async function ({ url }) {
       try {
@@ -64,7 +84,7 @@ export function summaryTool(mcp: McpServer) {
 
         return {
           content: [{ type: 'text', text: JSON.stringify(output) }],
-          // structuredContent: output,
+          structuredContent: output,
         };
       } catch (e) {
         throw new McpError(
