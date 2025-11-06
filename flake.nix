@@ -35,7 +35,7 @@
   in {
     packages = eachSystem (system: {
       # Produce a package for this template with bun2nix
-      default = pkgsFor.${system}.callPackage ./default.nix {
+      default = pkgsFor.${system}.callPackage ./nix/package.nix {
         inherit (bun2nix.lib.${system}) mkBunDerivation;
       };
     });

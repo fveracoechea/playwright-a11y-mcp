@@ -1,9 +1,8 @@
 {mkBunDerivation, ...}:
 mkBunDerivation {
-  pname = "minimal-bun2nix-example";
+  pname = "playwright-a11y-mcp";
   version = "1.0.0";
-  src = ./.;
+  src = ../.;
   bunNix = ./bun.nix;
-
   # index = "src/index.ts";
 }
