@@ -30,6 +30,7 @@ bunx playwright install chromium
 
 ```sh
 bun run dev
+bunx @modelcontextprotocol/inspector
 ```
 
 Server starts on `http://localhost:8080`.
