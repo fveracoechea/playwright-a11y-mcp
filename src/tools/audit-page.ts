@@ -1,8 +1,23 @@
-import AxeBuilder from '@axe-core/playwright';
+import { analizeURL, captureScreenshot } from '@/utils/playwright';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
-import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
-import { chromium, devices } from 'playwright';
 import z from 'zod';
+
+const ResultSchema = z.object({
+  id: z.string(),
+  help: z.string(),
+  impact: z.enum(['critical', 'serious', 'moderate', 'minor']),
+  description: z.string(),
+  nodes: z.array(
+    z.object({
+      html: z.string(),
+      selector: z.string().nullable(),
+      screenshot: z.string().nullable(),
+      summary: z.string().nullable(),
+    }),
+  ),
+});
+
+type ResultType = z.infer<typeof ResultSchema>;
 
 export function auditPageTool(mcp: McpServer) {
   mcp.registerTool(
@@ -11,38 +26,63 @@ export function auditPageTool(mcp: McpServer) {
       title: 'Accessibility Audit Webpage',
       description: 'Perform an WCAG 2.1 AA accessibility audit on a given webpage URL',
       inputSchema: { url: z.string().url() },
-      // outputSchema: { url: z.string().url() },
+      outputSchema: {
+        url: z.string().url(),
+        timestamp: z.string().datetime(),
+        totalViolations: z.number(),
+        results: z.array(ResultSchema),
+      },
     },
     async function ({ url }) {
-      try {
-        const browser = await chromium.launch({ headless: false });
-        const context = await browser.newContext(devices['Desktop Chrome']);
-        const page = await context.newPage();
+      const {
+        browser,
+        results: { violations },
+        page,
+      } = await analizeURL(url);
 
-        page.on('console', msg => console.log(`PLAYWRIGHT LOG`, url, msg.text()));
+      let screenshotsCaptured = 0;
+      const results: ResultType[] = [];
 
-        await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-
-        // @ts-expect-error page types
-        const result = await new AxeBuilder({ page })
-          .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-          .analyze();
-
-        await browser.close();
-
-        console.log(result.violations[0].nodes);
-
-        const output = result.violations;
-        return {
-          content: [{ type: 'text', text: JSON.stringify(output) }],
-          // structuredContent: output,
+      for (const violation of violations) {
+        const item: ResultType = {
+          id: violation.id,
+          help: violation.help,
+          impact: violation.impact ?? 'minor',
+          description: violation.description,
+          nodes: [],
         };
-      } catch (e) {
-        throw new McpError(
-          ErrorCode.InternalError,
-          `${e instanceof Error ? e.message : 'Error auditing webpage'} - ${url}`,
-        );
+
+        for (const node of violation.nodes) {
+          const selector = typeof node.target[0] === 'string' ? node.target[0] : null;
+
+          const screenshot = await captureScreenshot({ selector, page, violation });
+          if (screenshot) screenshotsCaptured++;
+
+          item.nodes.push({
+            selector,
+            screenshot,
+            html: node.html,
+            summary: node.failureSummary || null,
+          });
+        }
+
+        results.push(item);
       }
+
+      await browser.close();
+
+      const output = {
+        url,
+        results,
+        screenshotsCaptured,
+        totalViolations: violations.length,
+        timestamp: new Date().toISOString(),
+      };
+
+      return {
+        content: [{ type: 'text', text: JSON.stringify(output) }],
+        structuredContent: output,
+      };
     },
   );
 }
