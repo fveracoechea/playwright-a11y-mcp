@@ -41,6 +41,7 @@ export function auditPageTool(mcp: McpServer) {
       } = await analizeURL(url);
 
       let screenshotsCaptured = 0;
+      const timestamp = new Date();
       const results: ResultType[] = [];
 
       for (const violation of violations) {
@@ -54,8 +55,7 @@ export function auditPageTool(mcp: McpServer) {
 
         for (const node of violation.nodes) {
           const selector = typeof node.target[0] === 'string' ? node.target[0] : null;
-
-          const screenshot = await captureScreenshot({ selector, page, violation });
+          const screenshot = await captureScreenshot({ selector, page });
           if (screenshot) screenshotsCaptured++;
 
           item.nodes.push({
@@ -76,7 +76,7 @@ export function auditPageTool(mcp: McpServer) {
         results,
         screenshotsCaptured,
         totalViolations: violations.length,
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp.toISOString(),
       };
 
       return {

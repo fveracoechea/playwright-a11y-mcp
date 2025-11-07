@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { serveStatic } from 'hono/bun';
 import { logger } from 'hono/logger';
 
 import { StreamableHTTPTransport } from '@hono/mcp';
@@ -15,9 +16,9 @@ app.all('/mcp', async c => {
   return transport.handleRequest(c);
 });
 
-app.get('/healthcheck', c => {
-  return c.text('OK');
-});
+app.get('/screenshots/*', serveStatic({ root: './public' }));
+
+app.get('/healthcheck', c => c.text('OK'));
 
 export default {
   port: 8080,

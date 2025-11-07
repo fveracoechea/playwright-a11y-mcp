@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "playwright-a11y-mcp": {
+      "type": "remote",
+      "url": "http://localhost:8080/mcp",
+      "enabled": true
+    }
+  }
+}

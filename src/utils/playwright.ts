@@ -33,21 +33,16 @@ export async function analizeURL(url: string) {
 /**
  * Capture a screenshot of a specific element on the page identified by a selector.
  * */
-export async function captureScreenshot(args: {
-  page: Page;
-  violation: Result;
-  selector: string | null;
-}) {
+export async function captureScreenshot(args: { page: Page; selector: string | null }) {
   try {
-    const { selector, page, violation } = args;
+    const { selector, page } = args;
     if (!selector) return null;
 
-    const screenshotID = crypto.randomUUID();
     const handle = await page.$(selector);
     if (!handle) throw new Error(`Element not found for selector: ${selector}`);
 
     const buffer = await handle.screenshot({ type: 'jpeg' });
-    const filename = `${violation.id}-${violation.impact ?? 'minor'}-${screenshotID}.jpeg`;
+    const filename = `${crypto.randomUUID()}.jpeg`;
     const diskPath = path.join(path.resolve(process.cwd(), 'public/screenshots'), filename);
 
     await fs.writeFile(diskPath, buffer);
