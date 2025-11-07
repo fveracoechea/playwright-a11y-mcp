@@ -10,26 +10,23 @@ import { Browser, Page, chromium, devices } from 'playwright';
  * Helper function to launch Playwright, navigate to a URL, and run Axe accessibility analysis.
  * */
 export async function analizeURL(url: string) {
-  let browser: Browser | null = null;
   try {
-    browser = await chromium.launch({ headless: false });
+    const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext(devices['Desktop Chrome']);
     const page = await context.newPage();
 
+    await page.setViewportSize({ width: 1440, height: 900 });
     page.on('console', msg => console.log(`PLAYWRIGHT LOG`, url, msg.text()));
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+    await page.goto(url, { waitUntil: 'networkidle', timeout: 35000 });
 
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
       .analyze();
-
     return { results, page, browser };
   } catch (error) {
     throw new McpError(ErrorCode.InternalError, 'Unable to analyze page', {
       reason: error instanceof Error ? error : undefined,
     });
-  } finally {
-    if (browser) await browser.close();
   }
 }
 

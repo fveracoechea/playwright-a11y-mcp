@@ -1,10 +1,13 @@
 import { Hono } from 'hono';
+import { logger } from 'hono/logger';
 
 import { StreamableHTTPTransport } from '@hono/mcp';
 
 import mcp from './mcp';
 
 const app = new Hono();
+
+app.use(logger());
 
 app.all('/mcp', async c => {
   const transport = new StreamableHTTPTransport();
@@ -18,6 +21,6 @@ app.get('/healthcheck', c => {
 
 export default {
   port: 8080,
-  idleTimeout: 35,
+  idleTimeout: 120,
   fetch: app.fetch,
 };
