@@ -69,3 +69,43 @@ easier traceability.
 - Slow audits: check network requests; pages with heavy third-party scripts may exceed the
   target time
 - Empty results: ensure the URL is reachable and returns a valid HTML document
+
+## Report Generation Prompt
+
+The server exposes a prompt `generate-accessibility-report` that transforms raw tool JSON into
+a comprehensive Markdown report (executive summary, detailed violations, remediation plan,
+color contrast analysis, appendix).
+
+### Steps
+
+1. Run the detailed audit tool:
+   - `a11y_audit_page` with `{ "url": "https://example.com" }`
+2. Run the summary tool:
+   - `a11y_get_summary` with `{ "url": "https://example.com" }`
+3. Invoke the prompt with the raw JSON outputs (pass them as strings):
+
+```json
+{
+  "name": "generate-accessibility-report",
+  "arguments": {
+    "url": "https://example.com",
+    "auditJson": "<raw JSON string from a11y_audit_page>",
+    "summaryJson": "<raw JSON string from a11y_get_summary>",
+    "nodeDisplayThreshold": 50,
+    "nodeDisplayHeadCount": 40,
+    "paletteSuggestionsJson": "[ { \"role\": \"bodyText\", \"currentHex\": \"#666666\", \"proposedHex\": \"#4a4a4a\", \"contrastNote\": \"Improves contrast on light background\" } ]"
+  }
+}
+```
+
+### Arguments
+
+- `url`: Page audited.
+- `auditJson`: Raw JSON from `a11y_audit_page` (do not pre-parse; send exact string).
+- `summaryJson`: Raw JSON from `a11y_get_summary`.
+- `nodeDisplayThreshold` (default 50): If a violation affects more nodes than this, only a head
+  subset is listed.
+- `nodeDisplayHeadCount` (default 40): Number of nodes to list before truncation notice.
+- `paletteSuggestionsJson` (optional): JSON array of suggested color contrast adjustments.
+
+The prompt returns formatted Markdown suitable for inclusion in reports or documentation.

@@ -1,4 +1,4 @@
 # deps
 build/
-public/screenshots/
+public/screenshots/*.jpeg
 node_modules/

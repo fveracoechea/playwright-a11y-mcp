@@ -1,3 +1,4 @@
+import { generateReportPrompt } from '@/prompts/generate-report';
 import { auditPageTool } from '@/tools/audit-page';
 import { summaryTool } from '@/tools/summary';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -9,5 +10,6 @@ const mcp = new McpServer({
 
 auditPageTool(mcp);
 summaryTool(mcp);
+generateReportPrompt(mcp);
 
 export default mcp;
