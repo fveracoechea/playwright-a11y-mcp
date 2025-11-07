@@ -267,6 +267,45 @@
     url = "https://registry.npmjs.org/@modelcontextprotocol/sdk/-/sdk-1.21.0.tgz";
     hash = "sha512-YFBsXJMFCyI1zP98u7gezMFKX4lgu/XpoZJk7ufI6UlFKXLj2hAMUuRlQX/nrmIPOmhRrG6tw2OQ2ZA/ZlXYpQ==";
   };
+  "@playwright/test" = {
+    out_path = "@playwright/test";
+    binaries = {
+      "playwright" = "../@playwright/test/cli.js";
+    };
+    name = "@playwright/test@1.56.1";
+    url = "https://registry.npmjs.org/@playwright/test/-/test-1.56.1.tgz";
+    hash = "sha512-vSMYtL/zOcFpvJCW71Q/OEGQb7KYBPAdKh35WNSkaZA75JlAO8ED8UN6GUNTm3drWomcbcqRPFqQbLae8yBTdg==";
+  };
+  "@playwright/test/playwright" = {
+    out_path = "@playwright/test/node_modules/playwright";
+    binaries = {
+      "playwright" = "../@playwright/test/node_modules/playwright/cli.js";
+    };
+    name = "playwright@1.56.1";
+    url = "https://registry.npmjs.org/playwright/-/playwright-1.56.1.tgz";
+    hash = "sha512-aFi5B0WovBHTEvpM3DzXTUaeN6eN0qWnTkKx4NQaH4Wvcmc153PdaY2UBdSYKaGYw+UyWXSVyxDUg5DoPEttjw==";
+  };
+  "@playwright/test/playwright/fsevents" = {
+    out_path = "@playwright/test/node_modules/playwright/node_modules/fsevents";
+    name = "fsevents@2.3.2";
+    url = "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz";
+    hash = "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==";
+  };
+  "@playwright/test/playwright/playwright-core" = {
+    out_path = "@playwright/test/node_modules/playwright/node_modules/playwright-core";
+    binaries = {
+      "playwright-core" = "../@playwright/test/node_modules/playwright/node_modules/playwright-core/cli.js";
+    };
+    name = "playwright-core@1.56.1";
+    url = "https://registry.npmjs.org/playwright-core/-/playwright-core-1.56.1.tgz";
+    hash = "sha512-hutraynyn31F+Bifme+Ps9Vq59hKuUCz7H1kDOcBs+2oGguKkWTU50bBWrtz34OUWmIwpBTWDxaRPXrIXkgvmQ==";
+  };
+  "@rollup/rollup-linux-x64-gnu" = {
+    out_path = "@rollup/rollup-linux-x64-gnu";
+    name = "@rollup/rollup-linux-x64-gnu@4.52.5";
+    url = "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.52.5.tgz";
+    hash = "sha512-hXGLYpdhiNElzN770+H2nlx+jRog8TyynpTVzdlc6bndktjKWyZyiCsuDAlpd+j+W+WNqfcyAWz9HxxIGfZm1Q==";
+  };
   "@trivago/prettier-plugin-sort-imports" = {
     out_path = "@trivago/prettier-plugin-sort-imports";
     name = "@trivago/prettier-plugin-sort-imports@6.0.0";
@@ -699,6 +738,12 @@
     url = "https://registry.npmjs.org/negotiator/-/negotiator-1.0.0.tgz";
     hash = "sha512-8Ofs/AUQh8MaEcrlq5xOX0CQ9ypTF5dl78mjlMNfOK08fzpgTHQRQPBxcPlEtIw0yRpws+Zo/3r+5WRby7u3Gg==";
   };
+  "neverthrow" = {
+    out_path = "neverthrow";
+    name = "neverthrow@8.2.0";
+    url = "https://registry.npmjs.org/neverthrow/-/neverthrow-8.2.0.tgz";
+    hash = "sha512-kOCT/1MCPAxY5iUV3wytNFUMUolzuwd/VF/1KCx7kf6CutrOsTie+84zTGTpgQycjvfLdBBdvBvFLqFD2c0wkQ==";
+  };
   "object-assign" = {
     out_path = "object-assign";
     name = "object-assign@4.1.1";
@@ -779,24 +824,15 @@
     binaries = {
       "playwright-core" = "../playwright-core/cli.js";
     };
-    name = "playwright-core@1.56.1";
-    url = "https://registry.npmjs.org/playwright-core/-/playwright-core-1.56.1.tgz";
-    hash = "sha512-hutraynyn31F+Bifme+Ps9Vq59hKuUCz7H1kDOcBs+2oGguKkWTU50bBWrtz34OUWmIwpBTWDxaRPXrIXkgvmQ==";
+    name = "playwright-core@1.54.1";
+    url = "https://registry.npmjs.org/playwright-core/-/playwright-core-1.54.1.tgz";
+    hash = "sha512-Nbjs2zjj0htNhzgiy5wu+3w09YetDx5pkrpI/kZotDlDUaYk0HVA5xrBVPdow4SAUIlhgKcJeJg4GRKW6xHusA==";
   };
   "playwright/fsevents" = {
     out_path = "playwright/node_modules/fsevents";
     name = "fsevents@2.3.2";
     url = "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz";
     hash = "sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==";
-  };
-  "playwright/playwright-core" = {
-    out_path = "playwright/node_modules/playwright-core";
-    binaries = {
-      "playwright-core" = "../playwright/node_modules/playwright-core/cli.js";
-    };
-    name = "playwright-core@1.54.1";
-    url = "https://registry.npmjs.org/playwright-core/-/playwright-core-1.54.1.tgz";
-    hash = "sha512-Nbjs2zjj0htNhzgiy5wu+3w09YetDx5pkrpI/kZotDlDUaYk0HVA5xrBVPdow4SAUIlhgKcJeJg4GRKW6xHusA==";
   };
   "prettier" = {
     out_path = "prettier";

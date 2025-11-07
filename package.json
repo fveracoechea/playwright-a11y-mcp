@@ -5,7 +5,7 @@
   "files": [
     "build"
   ],
-  "bin": "./build/cli.mjs",
+  "bin": "./build/stdio.mjs",
   "keywords": [
     "accessibility",
     "a11y",
@@ -14,9 +14,8 @@
     "axe-core"
   ],
   "scripts": {
-    "postinstall": "bun2nix -o nix/bun.nix",
-    "dev": "bun run --hot src/index.ts",
-    "build": "bunx tsdown --no-config -d build src/bin.ts",
+    "dev": "bun run --hot src/server.ts",
+    "build": "bunx tsdown --no-config -d build src/stdio.ts",
     "prettier:check": "prettier '**/*.{js,ts,jsx,tsx,json}' --check",
     "prettier:write": "prettier '**/*.{js,ts,jsx,tsx,json}' --write"
   },
@@ -26,8 +25,12 @@
     "@hono/node-server": "^1.19.6",
     "@hono/zod-validator": "^0.7.4",
     "@modelcontextprotocol/sdk": "^1.21.0",
+    "@playwright/test": "^1.54.1",
+    "axe-core": "^4.11.0",
     "hono": "^4.10.4",
+    "neverthrow": "^8.2.0",
     "playwright": "1.54.1",
+    "playwright-core": "1.54.1",
     "prettier": "^3.6.2",
     "zod": "3.x"
   },
