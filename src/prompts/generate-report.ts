@@ -20,7 +20,7 @@ export function generateReportPrompt(server: McpServer) {
     async ({ url }) => {
       const file = path.join(
         path.resolve(process.cwd(), 'public', 'templates'),
-        'generate-prompt.md',
+        'generate-report.md',
       );
       const text = await fs.readFile(file, { encoding: 'utf8' });
       return {
