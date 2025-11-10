@@ -50,9 +50,9 @@ readability.
 - Impact: critical
 - Affected Nodes: 1
 
-| #   | Selector | HTML Snippet                                                | Failure Summary                                                                                                 | Screenshot                                |
-| --- | -------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| 1   | #logo    | `<img id="logo" src="/media/images/logo-magnit-login.svg">` | Element does not have an alt attribute; aria-label / aria-labelledby absent; no title; semantics not overridden | 9396c3bc-a4c5-4b4b-b97a-9239a44b4cd3.jpeg |
+| #   | Selector | HTML Snippet                                                | Failure Summary                                                                                                 | Screenshot                                                                  |
+| --- | -------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 1   | #logo    | `<img id="logo" src="/media/images/logo-magnit-login.svg">` | Element does not have an alt attribute; aria-label / aria-labelledby absent; no title; semantics not overridden | ![screenshot](public/screenshots/9396c3bc-a4c5-4b4b-b97a-9239a44b4cd3.jpeg) |
 
 **Why This Matters**  
 Without alternative text, non-visual users miss branding and functional context; images without
@@ -80,9 +80,9 @@ alt hinder screen reader navigation and may introduce ambiguity in page purpose.
 - Impact: critical
 - Affected Nodes: 1
 
-| #   | Selector  | HTML Snippet                                                                                                  | Failure Summary                                                                                          | Screenshot                                |
-| --- | --------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| 1   | #language | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Missing implicit/explicit `<label>`; no aria-label / aria-labelledby; no title; semantics not overridden | e3e0ed01-2037-4eb9-bb6b-482dffc922aa.jpeg |
+| #   | Selector  | HTML Snippet                                                                                                  | Failure Summary                                                                                          | Screenshot                                                                  |
+| --- | --------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 1   | #language | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Missing implicit/explicit `<label>`; no aria-label / aria-labelledby; no title; semantics not overridden | ![screenshot](public/screenshots/e3e0ed01-2037-4eb9-bb6b-482dffc922aa.jpeg) |
 
 **Why This Matters**  
 Form controls without names are invisible to assistive technology users, preventing them from
@@ -114,11 +114,11 @@ completion.
 - Impact: serious
 - Affected Nodes: 3
 
-| #   | Selector     | HTML Snippet                                                                                                  | Failure Summary                                                                   | Screenshot                                |
-| --- | ------------ | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------- |
-| 1   | #language    | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Contrast 4.49 (<span style="color:#637a89">#637a89</span> on #ffffff) below 4.5:1 | ed2b2d92-bc1f-45d5-b624-0cd5eff6b038.jpeg |
-| 2   | #user > span | `<span class="mid-gray">Please log in to your account below</span>`                                           | Contrast 4.49 (#637a89 on #ffffff) below 4.5:1                                    | 16eeb32c-c4c1-492a-9a12-2bdd2caefd8a.jpeg |
-| 3   | #footer2     | `<footer id="footer2">`                                                                                       | Contrast 2.9 (#7f94ae on #f6f7f9) below 4.5:1                                     | 935dfdf4-0471-40b0-8d33-164575695d7b.jpeg |
+| #   | Selector     | HTML Snippet                                                                                                  | Failure Summary                                                                   | Screenshot                                                                  |
+| --- | ------------ | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| 1   | #language    | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Contrast 4.49 (<span style="color:#637a89">#637a89</span> on #ffffff) below 4.5:1 | ![screenshot](public/screenshots/ed2b2d92-bc1f-45d5-b624-0cd5eff6b038.jpeg) |
+| 2   | #user > span | `<span class="mid-gray">Please log in to your account below</span>`                                           | Contrast 4.49 (#637a89 on #ffffff) below 4.5:1                                    | ![screenshot](public/screenshots/16eeb32c-c4c1-492a-9a12-2bdd2caefd8a.jpeg) |
+| 3   | #footer2     | `<footer id="footer2">`                                                                                       | Contrast 2.9 (#7f94ae on #f6f7f9) below 4.5:1                                     | ![screenshot](public/screenshots/935dfdf4-0471-40b0-8d33-164575695d7b.jpeg) |
 
 **Why This Matters**  
 Insufficient contrast impairs readability for users with low vision, color vision deficiencies,
@@ -150,9 +150,9 @@ variations.
 - Impact: serious
 - Affected Nodes: 1
 
-| #   | Selector | HTML Snippet | Failure Summary                         | Screenshot                                |
-| --- | -------- | ------------ | --------------------------------------- | ----------------------------------------- |
-| 1   | html     | `<html>`     | `<html>` element lacks `lang` attribute | a7f55f7d-4ad2-4c5e-8bd7-20a59891cb4b.jpeg |
+| #   | Selector | HTML Snippet | Failure Summary                         | Screenshot                                                                  |
+| --- | -------- | ------------ | --------------------------------------- | --------------------------------------------------------------------------- |
+| 1   | html     | `<html>`     | `<html>` element lacks `lang` attribute | ![screenshot](public/screenshots/a7f55f7d-4ad2-4c5e-8bd7-20a59891cb4b.jpeg) |
 
 **Why This Matters**  
 Without a `lang` attribute, screen readers cannot apply correct pronunciation rules, affecting
