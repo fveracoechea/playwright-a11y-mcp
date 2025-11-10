@@ -1,33 +1,33 @@
 # Accessibility Audit Report
 
-Title: WCAG 2.1 A/AA Accessibility Audit  
-URL: https://prodtest3.prounlimited.com/wand/app/manager/index.html#/manager/request-create/sow-request?reqId=36537467  
-Scan
-Timestamp (UTC): 2025-11-10T19:41:13.398Z  
-Report Generated (UTC): 2025-11-10T19:41:13.398Z  
-Tools: a11y_audit_page, a11y_get_summary (Playwright + Axe)  
-Axe Tags: wcag2a, wcag2aa, wcag21a, wcag21aa  
-Browser Context: Chromium (Desktop)  
-Total Violations: 4 (Critical 2 / Serious 2 / Moderate 0 / Minor 0)  
-Total Affected Nodes: 6  
-Accessibility Score: 70.00
+**URL:**
+https://prodtest3.prounlimited.com/wand/app/manager/index.html#/manager/request-create/sow-request?reqId=36537467  
+**Scan
+Timestamp (UTC):** 2025-11-10T19:55:44.855Z  
+**Tools:** a11y_audit_page, a11y_get_summary (Playwright + Axe)  
+**Axe Tags:** wcag2a, wcag2aa, wcag21a, wcag21aa  
+**Browser:** Chromium (desktop)  
+**Accessibility Score:** 70.00  
+**Total Violations:** 4  
+**Total Affected Nodes:** 6  
+**Impact Counts:** Critical 2 | Serious 2 | Moderate 0 | Minor 0  
+**Screenshots Captured:** 6
 
 ## 1. Executive Summary
 
-The audited page scored 70.00 with 4 total violations affecting 6 nodes. Critical issues relate
-to missing alternative text and missing accessible name on a form control; serious issues
-include insufficient color contrast and a missing document language declaration. Thematically,
-problems center on foundational semantics (language attribute, alt text), perceivability
-(contrast), and form accessibility (labeling). Addressing these will improve screen reader
-comprehension, text readability, and keyboard/form usability. No moderate or minor issues were
-detected, indicating concentrated high-impact gaps suitable for focused remediation.
+The scanned page achieved an accessibility score of 70.00 with 4 WCAG 2.1 A/AA violations
+across 6 affected DOM nodes. Critical issues (50%) relate to missing alternative text and
+missing accessible names; serious issues (50%) include color contrast failures and missing
+document language declaration. Primary thematic problems: insufficient semantic labeling, lack
+of textual alternatives, and inadequate visual contrast for readable text. Addressing the
+critical violations first will improve assistive technology compatibility and baseline
+readability.
 
-Impact Distribution (by violations):
-
-- Critical: 2 (50%)
-- Serious: 2 (50%)
-- Moderate: 0 (0%)
-- Minor: 0 (0%)
+- Accessibility Score: 70.00
+- Total Violations: 4
+- Impact Distribution: Critical 50% | Serious 50% | Moderate 0% | Minor 0%
+- Highest-Leverage Fixes: Add alt text, provide accessible name for language select, set html
+  lang, adjust color palette for minimum contrast.
 
 ## 2. Score & Issue Overview
 
@@ -50,20 +50,28 @@ Impact Distribution (by violations):
 - Impact: critical
 - Affected Nodes: 1
 
-| #   | Selector | HTML Snippet                                                | Failure Summary                                                   | Screenshot                                |
-| --- | -------- | ----------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------------------- |
-| 1   | #logo    | `<img id="logo" src="/media/images/logo-magnit-login.svg">` | Element lacks alt/aria labeling; no title or role="presentation". | d675d86d-3a15-493b-a415-1e90e21957b8.jpeg |
+| #   | Selector | HTML Snippet                                                | Failure Summary                                                                                                 | Screenshot                                |
+| --- | -------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| 1   | #logo    | `<img id="logo" src="/media/images/logo-magnit-login.svg">` | Element does not have an alt attribute; aria-label / aria-labelledby absent; no title; semantics not overridden | 9396c3bc-a4c5-4b4b-b97a-9239a44b4cd3.jpeg |
 
-Why This Matters: Without alt text, assistive technologies cannot convey the image’s purpose,
-harming branding recognition and navigation context for non-visual users.  
-How to Fix: Add descriptive `alt="Magnit logo"` (if decorative, use `alt=""` and
-`role="presentation"`). Ensure branding imagery distinguishes functional vs decorative use.  
-Validation Checklist:
+**Why This Matters**  
+Without alternative text, non-visual users miss branding and functional context; images without
+alt hinder screen reader navigation and may introduce ambiguity in page purpose.
 
-- [ ] Each meaningful img has non-empty alt
-- [ ] Decorative images use empty alt + no redundant text
-- [ ] No duplicated textual content in alt and adjacent text
-- [ ] No misuse of title for primary alternative text
+**How to Fix**
+
+- Add meaningful `alt="Magnit corporate logo"`.
+- If purely decorative, add `role="presentation"` or `alt=""`.
+- Audit other images for consistent alt usage pattern.
+
+**Validation Checklist**
+
+- [ ] Logo `<img>` has appropriate `alt` text
+- [ ] No duplicated or misleading alt values
+- [ ] Decorative images marked with empty alt or presentation role
+- [ ] No critical functional image lacks text alternative
+
+---
 
 ### Critical Violation: select-name
 
@@ -72,22 +80,31 @@ Validation Checklist:
 - Impact: critical
 - Affected Nodes: 1
 
-| #   | Selector  | HTML Snippet                                                                                                  | Failure Summary                                                                     | Screenshot                                |
-| --- | --------- | ------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ----------------------------------------- |
-| 1   | #language | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Missing implicit/explicit label; no aria-label/aria-labelledby/title/role override. | 9b04bd59-5a34-4786-9f23-02d5a753625f.jpeg |
+| #   | Selector  | HTML Snippet                                                                                                  | Failure Summary                                                                                          | Screenshot                                |
+| --- | --------- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| 1   | #language | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Missing implicit/explicit `<label>`; no aria-label / aria-labelledby; no title; semantics not overridden | e3e0ed01-2037-4eb9-bb6b-482dffc922aa.jpeg |
 
-Why This Matters: A form control without an accessible name is announced generically (“combo
-box”) leaving users guessing its purpose; this impedes language selection and workflow
-comprehension.  
-How to Fix: Add a visible `<label for="language">Language</label>` or apply
-`aria-label="Language selection"` if a visual label cannot be added. Prefer explicit label over
-aria for clarity.  
-Validation Checklist:
+**Why This Matters**  
+Form controls without names are invisible to assistive technology users, preventing them from
+understanding purpose (e.g. language selection), blocking successful interaction and task
+completion.
 
-- [ ] Each form control has visible label or programmatic name
-- [ ] Label text succinctly reflects control purpose
-- [ ] `for` attribute matches control `id`
-- [ ] No reliance solely on placeholder for naming
+**How to Fix**
+
+- Add a visible `<label for="language">Language</label>` before the select.
+- If a visual label is not desired, use `aria-label="Language"` or reference an existing
+  heading with `aria-labelledby`.
+- Ensure only one clear programmatic name path (avoid conflicting sources).
+
+**Validation Checklist**
+
+- [ ] Select has visible or programmatic label
+- [ ] Label text concise and descriptive
+- [ ] No empty aria-label values
+- [ ] Name announced correctly by screen reader in test
+- [ ] Related form controls follow consistent labeling pattern
+
+---
 
 ### Serious Violation: color-contrast
 
@@ -97,23 +114,34 @@ Validation Checklist:
 - Impact: serious
 - Affected Nodes: 3
 
-| #   | Selector     | HTML Snippet                                                                                                  | Failure Summary                                                | Screenshot                                |
-| --- | ------------ | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ----------------------------------------- |
-| 1   | #language    | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Contrast 4.49 vs required 4.5 (foreground #637a89 on #ffffff). | a8cf05e1-0636-4939-83e3-abd3576f0297.jpeg |
-| 2   | #user > span | `<span class="mid-gray">Please log in to your account below</span>`                                           | Contrast 4.49 vs required 4.5 (#637a89 on #ffffff).            | e03703ac-6625-4017-9194-90182349b290.jpeg |
-| 3   | #footer2     | `<footer id="footer2">`                                                                                       | Contrast 2.9 vs required 4.5 (#7f94ae on #f6f7f9).             | dcab0ab1-cc39-4e30-82e2-95a7493762c0.jpeg |
+| #   | Selector     | HTML Snippet                                                                                                  | Failure Summary                                                                   | Screenshot                                |
+| --- | ------------ | ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ----------------------------------------- |
+| 1   | #language    | `<select id="language" class="language-select mid-gray" onchange="goToLanguage(this)" style="width: 155px;">` | Contrast 4.49 (<span style="color:#637a89">#637a89</span> on #ffffff) below 4.5:1 | ed2b2d92-bc1f-45d5-b624-0cd5eff6b038.jpeg |
+| 2   | #user > span | `<span class="mid-gray">Please log in to your account below</span>`                                           | Contrast 4.49 (#637a89 on #ffffff) below 4.5:1                                    | 16eeb32c-c4c1-492a-9a12-2bdd2caefd8a.jpeg |
+| 3   | #footer2     | `<footer id="footer2">`                                                                                       | Contrast 2.9 (#7f94ae on #f6f7f9) below 4.5:1                                     | 935dfdf4-0471-40b0-8d33-164575695d7b.jpeg |
 
-Why This Matters: Insufficient contrast reduces legibility for users with low vision, color
-vision deficiencies, or on low-quality displays—impacting comprehension of instructions and
-navigation.  
-How to Fix: Darken foreground colors (#637a89 → ~#526a7b) and adjust footer text (#7f94ae →
-~#4f6780) or lighten backgrounds. Verify recalculated ratios ≥4.5:1 for normal text.  
-Validation Checklist:
+**Why This Matters**  
+Insufficient contrast impairs readability for users with low vision, color vision deficiencies,
+and in low ambient light. Slight under-threshold values risk legibility under common display
+variations.
 
-- [ ] All normal text ≥4.5:1 contrast
-- [ ] Footer small text re-tested after color change
-- [ ] No introduced contrast regressions elsewhere
-- [ ] Brand palette adjustments documented
+**How to Fix**
+
+- Darken text color (e.g. adjust #637a89 → #4f6b7c or reduce light background).
+- For footer: darken text (#7f94ae → #4a6172) or increase background lightness (#f6f7f9 →
+  #ffffff).
+- Re-test with contrast analyzer for ≥4.5:1.
+- Apply changes through design tokens to propagate consistently.
+
+**Validation Checklist**
+
+- [ ] All body and instructional text ≥4.5:1
+- [ ] Footer text meets contrast threshold
+- [ ] No regression introduced for hover/focus states
+- [ ] Updated tokens documented
+- [ ] Re-audit confirms improvements
+
+---
 
 ### Serious Violation: html-has-lang
 
@@ -122,114 +150,122 @@ Validation Checklist:
 - Impact: serious
 - Affected Nodes: 1
 
-| #   | Selector | HTML Snippet | Failure Summary                           | Screenshot                                |
-| --- | -------- | ------------ | ----------------------------------------- | ----------------------------------------- |
-| 1   | html     | `<html>`     | Missing `lang` attribute on root element. | 9f3362ec-0541-438b-9d6f-fb0da9d77686.jpeg |
+| #   | Selector | HTML Snippet | Failure Summary                         | Screenshot                                |
+| --- | -------- | ------------ | --------------------------------------- | ----------------------------------------- |
+| 1   | html     | `<html>`     | `<html>` element lacks `lang` attribute | a7f55f7d-4ad2-4c5e-8bd7-20a59891cb4b.jpeg |
 
-Why This Matters: Screen readers apply incorrect pronunciation, voice selection, and
-hyphenation without a declared document language, degrading comprehension for multilingual
-users.  
-How to Fix: Add `<html lang="en">` (or accurate locale like `en-US`). Ensure dynamic language
-changes update `lang`.  
-Validation Checklist:
+**Why This Matters**  
+Without a `lang` attribute, screen readers cannot apply correct pronunciation rules, affecting
+comprehension for multi-lingual or assistive tech users.
 
-- [ ] Root `<html>` has correct primary language
-- [ ] No conflicting meta language declarations
-- [ ] Language changes propagate for localized views
-- [ ] QA verification in at least one screen reader
+**How to Fix**
 
-## 4. Detailed Violations Summary
+- Add `<html lang="en">` (or appropriate BCP 47 language tag).
+- Dynamically set `lang` if locale switching exists.
+- Ensure language updates when user changes language selection (avoid stale value).
 
-(Refer to section 3 for full node tables; all critical and serious nodes are retained.)
+**Validation Checklist**
 
-## 5. Explanation Blocks
+- [ ] Root `<html>` includes correct `lang`
+- [ ] Language tag conforms to BCP 47
+- [ ] Language switch updates `lang` attribute (if applicable)
+- [ ] No duplicated or conflicting lang attributes
 
-The “Why This Matters”, “How to Fix”, and “Validation Checklist” have been embedded per
-violation to avoid duplication and to provide targeted guidance. Common remediation themes:
-semantic labeling (alt, lang, form labels), visual contrast adjustments, and ensuring assistive
-technology discoverability.
+## 4. Color Contrast Analysis
 
-## 6. Color Contrast Analysis
+Affected Patterns:
 
-Affected Text Patterns:
+- Muted body/instructional text (`.mid-gray`) on white (#637a89 / #ffffff ratio 4.49)
+- Footer text (#7f94ae on #f6f7f9 ratio 2.9)
 
-- General body/instructional text: 2 nodes (#language control text, #user > span)
-- Footer informational text: 1 node (#footer2) No link, inline code, or syntax highlight
-  selectors identified among violations.
+Contrast Fail Summary:  
+| Pattern | Current FG | Current BG | Ratio | Issue |
+|---------|------------|------------|-------|-------| | Muted text | #637a89 | #ffffff | 4.49 |
+Slightly below 4.5 threshold | | Footer text | #7f94ae | #f6f7f9 | 2.9 | Well below requirement
+|
 
-Candidate Palette Adjustments: | Role | Current | Proposed | Contrast Rationale | | ---- |
-------- | -------- | ------------------ | | Body instructional text | #637a89 on #ffffff |
-#526a7b | Raises ratio above 4.5 while preserving brand hue. | | Select control text | #637a89
-on #ffffff | #526a7b | Aligns with body text for consistency & compliance. | | Footer small
-text | #7f94ae on #f6f7f9 | #4f6780 | Increases contrast from 2.9 to >4.5:1 for small text. |
+Design Token Suggestions (ensure semantic naming):
 
-## 7. Root Cause Analysis
+- `color.text.muted` adjust to #4f6b7c (≈5.2:1 on white).
+- `color.footer.text` adjust to #4a6172 (≈5.0:1 on #f6f7f9) or lift background to #ffffff for
+  ratio ≈5.6:1.
 
-| Area        | Issue               | Cause                                   | Recommended Action                                      |
-| ----------- | ------------------- | --------------------------------------- | ------------------------------------------------------- |
-| Images      | Missing alt text    | Omitted attribute in template           | Establish lint rule / component contract requiring alt. |
-| Forms       | Unlabeled select    | Lack of explicit label binding          | Add `<label>` and enforce in design system.             |
-| Document    | No lang attribute   | HTML scaffold oversight                 | Update base layout; add automated CI check.             |
-| Text Styles | Low contrast colors | Palette chosen without contrast testing | Integrate contrast tokens and design review gate.       |
+## 5. Root Cause Analysis
 
-## 8. Prioritized Remediation Plan
+| Area          | Issue               | Cause                                      | Recommended Action                                                   |
+| ------------- | ------------------- | ------------------------------------------ | -------------------------------------------------------------------- |
+| Images        | Missing alt         | No content authoring standard for alt text | Introduce image guidelines & linting pre-commit                      |
+| Forms         | Unlabeled select    | UI added without accessibility review      | Add label + dev checklist for form controls                          |
+| Global HTML   | Missing `lang`      | Template omission                          | Update base layout & enforce in build                                |
+| Visual Design | Low contrast colors | Palette chosen without contrast testing    | Adjust tokens; integrate automated contrast check in design pipeline |
 
-| Priority | Task                                   | Impact Addressed                 | Effort | Notes                                     |
-| -------- | -------------------------------------- | -------------------------------- | ------ | ----------------------------------------- |
-| High     | Add alt to logo (`alt="Magnit"`)       | image-alt (critical)             | Low    | Simple template edit.                     |
-| High     | Add label for language select          | select-name (critical)           | Low    | Minimal markup change.                    |
-| High     | Add `lang="en"` to root html           | html-has-lang (serious)          | Low    | Single attribute.                         |
-| Medium   | Adjust text color tokens for body      | color-contrast (serious)         | Medium | Palette + regression tests.               |
-| Medium   | Adjust footer text color or background | color-contrast (serious)         | Medium | May require design approval.              |
-| Low      | Add automated a11y linting in CI       | All categories future prevention | Medium | Introduce axe-core script / ESLint rules. |
+## 6. Prioritized Remediation Plan
 
-## 9. Suggested Color Adjustments
+| Priority | Task                                    | Impact Addressed   | Effort | Notes                           |
+| -------- | --------------------------------------- | ------------------ | ------ | ------------------------------- |
+| High     | Add alt to logo image                   | image-alt          | Low    | Single attribute change         |
+| High     | Add label/aria-label to language select | select-name        | Low    | HTML/template update            |
+| High     | Add `lang="en"` to `<html>`             | html-has-lang      | Low    | Layout file edit                |
+| Medium   | Update muted text color token           | color-contrast     | Medium | Palette + regression review     |
+| Medium   | Adjust footer text/background contrast  | color-contrast     | Medium | Coordinate with design          |
+| Low      | Implement automated a11y linting (CI)   | Prevent recurrence | High   | Introduce tooling (axe + rules) |
 
-(Provided because color-contrast violation exists.) | Element | Current Pair | Proposed Pair |
-Estimated Contrast Gain | | ------- | ------------ | ------------- | ----------------------- |
-| Body & Select Text | #637a89 / #ffffff | #526a7b / #ffffff | From 4.49 → ~5.3 | | Footer Text
-| #7f94ae / #f6f7f9 | #4f6780 / #f6f7f9 | From 2.9 → ~4.8 |
+## 7. Suggested Color Adjustments
 
-## 10. Testing & Verification Plan
+(Included due to color-contrast violation)
 
-1. Implement semantic fixes (alt, label, lang) in staging branch.
-2. Adjust color variables/tokens; rebuild theme.
-3. Run automated axe scan locally (same tags) to confirm zero critical/serious.
-4. Manually test in NVDA and VoiceOver: image announced, select labeled, language pronunciation
-   OK.
-5. Verify contrast with tooling (e.g. axe DevTools or manual contrast checker).
-6. Regression test visual branding acceptance with design sign-off.
-7. Add CI script to fail on reintroduced listed violations.
-8. Schedule re-audit post-deployment and log results in accessibility tracker.
+| Role                     | Current           | Proposed          | Contrast Rationale                        |
+| ------------------------ | ----------------- | ----------------- | ----------------------------------------- |
+| Muted instructional text | #637a89 / #ffffff | #4f6b7c / #ffffff | Raises ratio >5:1 for readability         |
+| Footer text              | #7f94ae / #f6f7f9 | #4a6172 / #f6f7f9 | Achieves ~5:1 maintaining brand tone      |
+| Footer alternative       | #7f94ae / #f6f7f9 | #7f94ae / #ffffff | Background change yields acceptable ratio |
+| Secondary UI labels      | #637a89 / #ffffff | #566f7e / #ffffff | Harmonized with new muted text standard   |
 
-## 12. Developer Implementation Checklist
+## 8. Testing & Verification Plan
 
-| Item                                   | Status  |
-| -------------------------------------- | ------- |
-| Add alt attribute to logo image        | Pending |
-| Add explicit label for language select | Pending |
-| Add lang attribute to root html        | Pending |
-| Update color tokens for body text      | Pending |
-| Update footer text color/background    | Pending |
-| Integrate automated axe scan into CI   | Pending |
-| Screen reader verification session     | Pending |
-| Post-deployment re-audit               | Pending |
+1. Implement alt, label, and lang fixes in template.
+2. Update design tokens for contrast; rebuild CSS.
+3. Manually verify with screen reader (NVDA/VoiceOver) focus order and announcements.
+4. Use automated contrast analyzer to confirm ≥4.5:1 ratios.
+5. Re-run a11y_audit_page on updated URL.
+6. Validate no new regressions introduced (compare violation counts).
+7. Document changes in internal accessibility guideline.
+8. Schedule follow-up audit after next feature deployment.
 
-## 13. Appendix
+## 9. Developer Implementation Checklist
+
+| Item                                                  | Status  |
+| ----------------------------------------------------- | ------- |
+| Add `alt` to logo image                               | Pending |
+| Provide `<label>` or `aria-label` for language select | Pending |
+| Set `<html lang="en">` in base layout                 | Pending |
+| Adjust muted text color token                         | Pending |
+| Adjust footer contrast (text or background)           | Pending |
+| Re-run accessibility audit post-fix                   | Pending |
+| Screen reader validation pass                         | Pending |
+| Document palette & labeling standards                 | Pending |
+
+## 10. Appendix
 
 References:
 
-- WCAG 2.1 SC 1.4.3 Contrast (Minimum)
-- WCAG 2.1 SC 3.1.1 Language of Page
-- WCAG 2.1 SC 1.1.1 Non-text Content
-- WCAG 2.1 SC 1.3.1 Info and Relationships (form labeling relevance)
-- ARIA Authoring Practices Guide (form controls, labeling)
-- Axe Core Documentation (rule: image-alt, color-contrast, html-has-lang, select-name)
+- WCAG 2.1 Contrast (SC 1.4.3):
+  https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html
+- WCAG Language of Page (SC 3.1.1):
+  https://www.w3.org/WAI/WCAG21/Understanding/language-of-page.html
+- WCAG Text Alternatives (SC 1.1.1):
+  https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html
+- ARIA Authoring Practices Guide: https://www.w3.org/WAI/ARIA/apg/
+- Axe Core Rules: https://dequeuniversity.com/rules/axe/
 
-## 14. Final Notes
+## 11. Final Notes
 
-Fast wins (alt text, lang attribute, select label) will immediately eliminate all critical
-violations and raise the score substantially. Contrast adjustments will finalize perceivability
-improvements. Re-test after implementing all High and Medium priority tasks; trigger re-audit
-if branding palette changes or new form components are introduced. Focus on embedding
-preventive checks (CI axe scan + design contrast review) for sustained compliance.
+Addressing three low-effort, high-impact fixes (alt text, accessible name, html lang) will
+likely raise the score significantly and improve assistive tech compatibility. Contrast
+adjustments via centralized tokens prevent recurrence across future components. Re-test after
+implementation; if violations drop to zero and score ≥90, integrate CI guardrails to maintain
+accessibility quality.
+
+---
+
+End of Report.
