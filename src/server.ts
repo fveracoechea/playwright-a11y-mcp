@@ -18,7 +18,12 @@ app.all('/mcp', async c => {
 
 app.get('/screenshots/*', serveStatic({ root: './public' }));
 
-app.get('/healthcheck', c => c.text('OK'));
+app.get('/healthcheck', c =>
+  c.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+  }),
+);
 
 export default {
   port: 8080,
