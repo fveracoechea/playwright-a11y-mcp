@@ -1,4 +1,4 @@
-import { calculateAxeScore } from '@/utils/playwright';
+import { analizeURL, calculateAxeScore } from '@/utils/playwright';
 import AxeBuilder from '@axe-core/playwright';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
@@ -11,7 +11,10 @@ export function summaryTool(mcp: McpServer) {
     {
       title: 'Get Accessibility Summary',
       description: 'Get a summary of accessibility issues for a given webpage URL',
-      inputSchema: { url: z.string().url() },
+      inputSchema: {
+        url: z.string().url(),
+        cookies: z.record(z.string(), z.string()).optional(),
+      },
       outputSchema: {
         url: z.string().url(),
         timestamp: z.string().datetime(),
@@ -25,24 +28,19 @@ export function summaryTool(mcp: McpServer) {
         }),
       },
     },
-    async function ({ url }) {
+    async function ({ url, cookies }) {
       try {
-        const browser = await chromium.launch({ headless: false });
-        const context = await browser.newContext(devices['Desktop Chrome']);
-        const page = await context.newPage();
-
-        await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
-
-        const results = await new AxeBuilder({ page })
-          .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-          .analyze();
+        const {
+          browser,
+          results: { violations },
+        } = await analizeURL(url, cookies);
 
         await browser.close();
 
         const output = {
           url,
           timestamp: new Date().toISOString(),
-          results: calculateAxeScore(results.violations),
+          results: calculateAxeScore(violations),
         };
 
         return {

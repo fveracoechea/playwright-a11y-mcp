@@ -4,15 +4,39 @@ import { Result } from 'axe-core';
 import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { Browser, Page, chromium, devices } from 'playwright';
+import { BrowserContext, Page, chromium, devices } from 'playwright';
+
+async function registerCookies(
+  context: BrowserContext,
+  cookies: Record<string, string>,
+  url: string,
+) {
+  console.log('COOKIES', cookies);
+  const { origin } = new URL(url);
+
+  const cookieData: Parameters<typeof context.addCookies>[0][number][] = [];
+
+  for (const [name, value] of Object.entries(cookies)) {
+    cookieData.push({
+      name,
+      value,
+      sameSite: 'Lax',
+      url: origin,
+    });
+  }
+
+  await context.addCookies(cookieData);
+}
 
 /**
  * Helper function to launch Playwright, navigate to a URL, and run Axe accessibility analysis.
  * */
-export async function analizeURL(url: string) {
+export async function analizeURL(url: string, cookies?: Record<string, string>) {
   try {
     const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext(devices['Desktop Chrome']);
+
+    if (cookies) await registerCookies(context, cookies, url);
     const page = await context.newPage();
 
     await page.setViewportSize({ width: 1440, height: 900 });

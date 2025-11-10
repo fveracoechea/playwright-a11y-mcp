@@ -25,7 +25,10 @@ export function auditPageTool(mcp: McpServer) {
     {
       title: 'Accessibility Audit Webpage',
       description: 'Perform an WCAG 2.1 AA accessibility audit on a given webpage URL',
-      inputSchema: { url: z.string().url() },
+      inputSchema: {
+        url: z.string().url(),
+        cookies: z.record(z.string(), z.string()).optional(),
+      },
       outputSchema: {
         url: z.string().url(),
         timestamp: z.string().datetime(),
@@ -33,12 +36,12 @@ export function auditPageTool(mcp: McpServer) {
         results: z.array(ResultSchema),
       },
     },
-    async function ({ url }) {
+    async function ({ url, cookies }) {
       const {
         browser,
         results: { violations },
         page,
-      } = await analizeURL(url);
+      } = await analizeURL(url, cookies);
 
       let screenshotsCaptured = 0;
       const timestamp = new Date();
