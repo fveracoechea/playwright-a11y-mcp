@@ -29,7 +29,9 @@ REPORT REQUIREMENTS
    - Heading: `### <impact Capitalized> Violation: <id>`
    - Bulleted: Help, Description, Impact, Affected Nodes count.
    - Node list columns: #, Selector (or “(none)” if null), HTML Snippet (truncate >120 chars,
-     preserve tag boundaries), Failure Summary (trim), Screenshot filename (or “—” if null).
+     preserve tag boundaries), Failure Summary (trim), Screenshot image should following this
+     format `![screenshot](public/screenshots/9396c3bc-a4c5-4b4b-b97a-9239a44b4cd3.jpeg)`
+
 5. Explanation Blocks:
    - Why This Matters (per violation) — tailored to rule specifics (e.g. semantics vs
      contrast).
