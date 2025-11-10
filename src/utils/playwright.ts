@@ -6,7 +6,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { BrowserContext, Page, chromium, devices } from 'playwright';
 
-async function registerCookies(
+/**
+ * Helper function to register cookies in a Playwright browser context.
+ * */
+export async function registerCookies(
   context: BrowserContext,
   cookies: Record<string, string>,
   url: string,
@@ -40,7 +43,6 @@ export async function analizeURL(url: string, cookies?: Record<string, string>) 
     const page = await context.newPage();
 
     await page.setViewportSize({ width: 1440, height: 900 });
-    page.on('console', msg => console.log(`PLAYWRIGHT LOG`, url, msg.text()));
     await page.goto(url, { waitUntil: 'networkidle', timeout: 35000 });
 
     const results = await new AxeBuilder({ page })

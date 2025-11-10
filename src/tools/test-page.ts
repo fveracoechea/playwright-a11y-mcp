@@ -1,14 +1,15 @@
-import { analizeURL, calculateAxeScore } from '@/utils/playwright';
+import { registerCookies } from '@/utils/playwright';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp';
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
+import { chromium, devices } from 'playwright';
 import z from 'zod';
 
-export function summaryTool(mcp: McpServer) {
+export function testPageTool(mcp: McpServer) {
   mcp.registerTool(
-    'a11y_get_summary',
+    'a11y_test_page',
     {
-      title: 'Get Accessibility Summary',
-      description: 'Get a summary of accessibility issues for a given webpage URL',
+      title: 'Load a page for testing',
+      description: 'Teset playwright loading a given webpage URL',
       inputSchema: {
         url: z.string().url(),
         cookies: z.record(z.string(), z.string()).optional(),
@@ -16,29 +17,27 @@ export function summaryTool(mcp: McpServer) {
       outputSchema: {
         url: z.string().url(),
         timestamp: z.string().datetime(),
-        results: z.object({
-          score: z.string(),
-          totalIssues: z.number(),
-          critical: z.number(),
-          serious: z.number(),
-          moderate: z.number(),
-          minor: z.number(),
-        }),
       },
     },
     async function ({ url, cookies }) {
       try {
-        const {
-          browser,
-          results: { violations },
-        } = await analizeURL(url, cookies);
+        const browser = await chromium.launch({ headless: false });
+        const context = await browser.newContext(devices['Desktop Chrome']);
 
-        await browser.close();
+        if (cookies) await registerCookies(context, cookies, url);
+        const page = await context.newPage();
+
+        await page.setViewportSize({ width: 1440, height: 900 });
+
+        page.on('console', msg => console.log(`PLAYWRIGHT LOG`, url, msg.text()));
+        await page.goto(url, { waitUntil: 'networkidle', timeout: 35000 });
+
+        // Do not close for manual testing
+        // await browser.close();
 
         const output = {
           url,
           timestamp: new Date().toISOString(),
-          results: calculateAxeScore(violations),
         };
 
         return {
