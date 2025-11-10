@@ -54,9 +54,13 @@ export function auditPageTool(mcp: McpServer) {
         };
 
         for (const node of violation.nodes) {
+          let screenshot: string | null = null;
           const selector = typeof node.target[0] === 'string' ? node.target[0] : null;
-          const screenshot = await captureScreenshot({ selector, page });
-          if (screenshot) screenshotsCaptured++;
+
+          if (node.impact === 'critical' || node.impact === 'serious') {
+            screenshot = await captureScreenshot({ selector, page });
+            if (screenshot) screenshotsCaptured++;
+          }
 
           item.nodes.push({
             selector,
