@@ -1,19 +1,26 @@
-# AGENTS.md
-Purpose: MCP server for Playwright-based WCAG a11y audits.
-Build/Dev: install deps `bun install`; hot dev `bun run dev`.
-Run: server listens on :8080; health at `/healthcheck`; MCP endpoint `/mcp`.
-Tests: Not required (runtime tooling server); focus on tool correctness.
-Audit Tools: `auditPageTool` registers `a11y_audit_page` (detailed violations) and `summaryTool` registers `a11y_get_summary` (aggregated metrics) for URL WCAG 2.1 AA scan.
-Accessibility: Use AxeBuilder tags `["wcag2a","wcag2aa","wcag21a","wcag21aa"]`; change only with justification.
-Browser: Launch Chromium; always close browser/context in `finally` when adding tools.
-Imports: external packages first, blank line, then internal `@/*` paths.
-Type imports: prefer `import type { Foo } from ...` for pure types.
-Types: TS strict; avoid `any`; validate all tool inputs with `zod`.
-Naming: files kebab-case; functions/vars camelCase; exported tool funcs verb-noun.
-Errors: wrap async tool bodies in try/catch; throw `McpError(ErrorCode.X, message)`.
-Logging: prefix Playwright console logs with `PLAYWRIGHT LOG` and include URL.
-Dependencies: after adding/removing run `bun install` to refresh `bun.nix`.
-Performance: Keep audits under 30s timeout; use `networkidle` navigation.
-Security: Never execute untrusted scripts; only navigate to provided URL.
-No Cursor or Copilot rules present; include them here if added.
-Keep changes minimal; avoid unrelated refactors.
+# Agent Development Guidelines
+
+## Build/Test Commands
+- `bun install` - Install dependencies and Playwright browsers
+- `bun run dev` - Start dev server with hot reload on http://localhost:8080
+- `bun run build` - Build production bundle to `build/` directory
+- `bun run prettier:check` - Check formatting (fails on issues)
+- `bun run prettier:write` - Auto-format all code
+- `bunx playwright install chromium` - Install Playwright browsers if missing
+
+## Code Style
+- **Imports**: External deps first, blank line, then `@/*` internal paths (auto-sorted by prettier plugin)
+- **Type Imports**: Use `import type` for pure type imports (e.g., `import type { McpServer }`)
+- **Formatting**: Single quotes, 95 char width, trailing commas, semicolons (enforced by Prettier)
+- **Strict TypeScript**: All code must pass strict mode checks (`strict: true` in tsconfig)
+- **Input Validation**: Validate all tool inputs with `zod` schemas
+- **Error Handling**: Wrap async logic in try/catch, throw `McpError` with specific `ErrorCode`
+- **Resource Cleanup**: Always close Playwright browser/context in `finally` blocks
+- **Naming**: camelCase for functions/variables, PascalCase for types/schemas
+- **Performance**: Target <30s audits, use `networkidle` navigation, avoid heavy operations
+- **Path Aliases**: Use `@/*` for imports from `src/` directory
+
+## Architecture Notes
+- MCP server using `@hono/mcp` with tools registered in `src/tools/`
+- Main server bootstrap: `src/mcp.ts`, HTTP wrapper: `src/server.ts`
+- Playwright utils in `src/utils/playwright.ts` for browser automation

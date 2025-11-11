@@ -27,7 +27,6 @@ export function auditPageTool(mcp: McpServer) {
       description: 'Perform an WCAG 2.1 AA accessibility audit on a given webpage URL',
       inputSchema: {
         url: z.string().url(),
-        cookies: z.record(z.string(), z.string()).optional(),
       },
       outputSchema: {
         url: z.string().url(),

@@ -11,7 +11,6 @@ export function summaryTool(mcp: McpServer) {
       description: 'Get a summary of accessibility issues for a given webpage URL',
       inputSchema: {
         url: z.string().url(),
-        cookies: z.record(z.string(), z.string()).optional(),
       },
       outputSchema: {
         url: z.string().url(),
@@ -26,12 +25,12 @@ export function summaryTool(mcp: McpServer) {
         }),
       },
     },
-    async function ({ url, cookies }) {
+    async function ({ url }) {
       try {
         const {
           browser,
           results: { violations },
-        } = await analizeURL(url, cookies);
+        } = await analizeURL(url);
 
         await browser.close();
 

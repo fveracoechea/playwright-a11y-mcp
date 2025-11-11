@@ -12,19 +12,18 @@ export function testPageTool(mcp: McpServer) {
       description: 'Teset playwright loading a given webpage URL',
       inputSchema: {
         url: z.string().url(),
-        cookies: z.record(z.string(), z.string()).optional(),
       },
       outputSchema: {
         url: z.string().url(),
         timestamp: z.string().datetime(),
       },
     },
-    async function ({ url, cookies }) {
+    async function ({ url }) {
       try {
         const browser = await chromium.launch({ headless: false });
         const context = await browser.newContext(devices['Desktop Chrome']);
 
-        if (cookies) await registerCookies(context, cookies, url);
+        await registerCookies(context, url);
         const page = await context.newPage();
 
         await page.setViewportSize({ width: 1440, height: 900 });
@@ -32,7 +31,7 @@ export function testPageTool(mcp: McpServer) {
         page.on('console', msg => console.log(`PLAYWRIGHT LOG`, url, msg.text()));
         await page.goto(url, { waitUntil: 'networkidle', timeout: 35000 });
 
-        // Do not close for manual testing
+        // INFO: Do not close for manual testing
         // await browser.close();
 
         const output = {

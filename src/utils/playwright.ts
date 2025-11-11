@@ -6,40 +6,32 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { BrowserContext, Page, chromium, devices } from 'playwright';
 
+import { env } from './env';
+
 /**
  * Helper function to register cookies in a Playwright browser context.
  * */
-export async function registerCookies(
-  context: BrowserContext,
-  cookies: Record<string, string>,
-  url: string,
-) {
-  console.log('COOKIES', cookies);
+export async function registerCookies(context: BrowserContext, url: string) {
   const { origin } = new URL(url);
-
-  const cookieData: Parameters<typeof context.addCookies>[0][number][] = [];
-
-  for (const [name, value] of Object.entries(cookies)) {
-    cookieData.push({
-      name,
-      value,
+  await context.addCookies([
+    {
+      name: env.AUTH_COOKIE_NAME,
+      value: env.AUTH_COOKIE_VALUE,
       sameSite: 'Lax',
       url: origin,
-    });
-  }
-
-  await context.addCookies(cookieData);
+    },
+  ]);
 }
 
 /**
  * Helper function to launch Playwright, navigate to a URL, and run Axe accessibility analysis.
  * */
-export async function analizeURL(url: string, cookies?: Record<string, string>) {
+export async function analizeURL(url: string) {
   try {
     const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext(devices['Desktop Chrome']);
 
-    if (cookies) await registerCookies(context, cookies, url);
+    await registerCookies(context, url);
     const page = await context.newPage();
 
     await page.setViewportSize({ width: 1440, height: 900 });

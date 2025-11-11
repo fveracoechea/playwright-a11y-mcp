@@ -5,6 +5,37 @@
       "type": "remote",
       "url": "http://localhost:8080/mcp",
       "enabled": true
+    },
+    "mcp-atlassian": {
+      "type": "local",
+      "enabled": false,
+      "command": [
+        "docker",
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "CONFLUENCE_URL",
+        "-e",
+        "CONFLUENCE_USERNAME",
+        "-e",
+        "CONFLUENCE_API_TOKEN",
+        "-e",
+        "JIRA_URL",
+        "-e",
+        "JIRA_USERNAME",
+        "-e",
+        "JIRA_API_TOKEN",
+        "ghcr.io/sooperset/mcp-atlassian:latest"
+      ],
+      "environment": {
+        "CONFLUENCE_URL": "https://your-company.atlassian.net/wiki",
+        "CONFLUENCE_USERNAME": "your.email@company.com",
+        "CONFLUENCE_API_TOKEN": "your_confluence_api_token",
+        "JIRA_URL": "https://your-company.atlassian.net",
+        "JIRA_USERNAME": "your.email@company.com",
+        "JIRA_API_TOKEN": "your_jira_api_token"
+      }
     }
   }
 }

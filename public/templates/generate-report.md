@@ -5,7 +5,6 @@ report.
 ARGUMENTS TO ASK FOR
 
 - URL: web page to validate
-- COOKIES: Optional cookies for authentication
 
 INPUT CONTEXT
 
