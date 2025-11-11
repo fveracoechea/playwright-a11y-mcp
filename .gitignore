@@ -1,5 +1,12 @@
 # deps
 build/
-.env
+
 # public/screenshots/*.jpeg
 node_modules/
+
+### Environment Variables ###
+.env
+.env.*
+*.env
+!.env.example
+!.env.template
