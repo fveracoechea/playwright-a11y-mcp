@@ -1,4 +1,5 @@
 # deps
 build/
+.env
 # public/screenshots/*.jpeg
 node_modules/
