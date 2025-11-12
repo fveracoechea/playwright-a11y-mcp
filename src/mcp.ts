@@ -12,6 +12,7 @@ const mcp = new McpServer(
   {
     capabilities: {
       tools: { listChanged: true },
+      prompts: { listChanged: true },
       capabilities: { listChanged: true },
     },
   },
