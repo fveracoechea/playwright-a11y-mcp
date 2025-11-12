@@ -35,12 +35,12 @@ export function auditPageTool(mcp: McpServer) {
         results: z.array(ResultSchema),
       },
     },
-    async function ({ url, cookies }) {
+    async function ({ url }) {
       const {
         browser,
         results: { violations },
         page,
-      } = await analizeURL(url, cookies);
+      } = await analizeURL(url);
 
       let screenshotsCaptured = 0;
       const timestamp = new Date();
