@@ -1,12 +1,10 @@
 import AxeBuilder from '@axe-core/playwright';
 import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { Result } from 'axe-core';
-import crypto from 'node:crypto';
-import fs from 'node:fs/promises';
-import path from 'node:path';
 import { BrowserContext, Page, chromium, devices } from 'playwright';
 
 import { env } from './env';
+import { uploadFile } from './upload';
 
 /**
  * Helper function to register cookies in a Playwright browser context.
@@ -50,6 +48,7 @@ export async function analizeURL(url: string) {
 
 /**
  * Capture a screenshot of a specific element on the page identified by a selector.
+ * Returns the full URL to access the screenshot.
  * */
 export async function captureScreenshot(args: { page: Page; selector: string | null }) {
   try {
@@ -60,11 +59,9 @@ export async function captureScreenshot(args: { page: Page; selector: string | n
     if (!handle) throw new Error(`Element not found for selector: ${selector}`);
 
     const buffer = await handle.screenshot({ type: 'jpeg' });
-    const filename = `${crypto.randomUUID()}.jpeg`;
-    const diskPath = path.join(path.resolve(process.cwd(), 'public/screenshots'), filename);
+    const { url } = await uploadFile(buffer, 'jpeg');
 
-    await fs.writeFile(diskPath, buffer);
-    return filename;
+    return url;
   } catch (e) {
     console.error(`SCREENSHOT ERROR`, e);
     return null;
