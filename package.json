@@ -14,8 +14,8 @@
     "axe-core"
   ],
   "scripts": {
-    "dev": "bun run --hot src/server.ts",
     "build": "bunx tsdown --no-config -d build src/stdio.ts",
+    "dev": "bun run --hot src/server.ts",
     "prettier:check": "prettier '**/*.{js,ts,jsx,tsx,json}' --check",
     "prettier:write": "prettier '**/*.{js,ts,jsx,tsx,json}' --write"
   },
@@ -33,10 +33,12 @@
     "playwright": "1.54.1",
     "playwright-core": "1.54.1",
     "prettier": "^3.6.2",
+    "sst": "3.17.23",
     "zod": "3.x"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "@types/aws-lambda": "8.10.159",
     "@types/bun": "latest",
     "tsx": "^4.20.6"
   }

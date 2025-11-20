@@ -1,0 +1,39 @@
+# Dependencies
+node_modules
+bun.lock
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+AGENTS.md
+*.md
+
+# Docker
+Dockerfile*
+.dockerignore
+
+# Development
+.env
+.envrc
+*.log
+
+# Build outputs (handled separately)
+build/
+dist/
+
+# Screenshots (runtime generated)
+public/screenshots/*.jpeg
+
+# Nix
+nix/
+flake.nix
+flake.lock
+
+# Config files not needed in container
+.prettierrc
+.prettierignore
+opencode.json
+sst.config.ts
