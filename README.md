@@ -1,4 +1,4 @@
-# playwright-a11y-mcp
+# playwright-a11y-mcp (POC)
 
 MCP server for automated web accessibility audits using Playwright + axe-core against WCAG 2.1 A/AA criteria.
 
